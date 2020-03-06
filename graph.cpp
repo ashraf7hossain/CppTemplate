@@ -15,3 +15,21 @@ void bipert(int u, int pr){
       bip = true;
   }
 }
+
+void BFS(vector<int>adj[100001] , int start , int target){
+    vector<int>dist(100001 , INT_MAX);
+    dist[start] = 0;
+    queue<int>q;
+    q.push(start);
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+        for(int x : adj[u]){
+            if(dist[x] == INT_MAX){
+                dist[x] = dist[u] + 1;
+                q.push(x);
+            }
+        }
+    }
+    printf("%d\n" , dist[target]);
+}
