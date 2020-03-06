@@ -36,3 +36,14 @@ long long QC(long long n , int r , long long M){
     }
     return res;
 }
+vector <bool> p(N,0);
+void sieve(){
+    p[1] = 1;
+    for(long long i=2;i*i<=N;i++){
+        if(p[i]==0){
+            for(long long j=i*i;j<=N;j+=i){
+                p[j] = 1;
+            }
+        }
+    }
+}
