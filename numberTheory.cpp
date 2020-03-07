@@ -47,3 +47,61 @@ void sieve(){
         }
     }
 }
+///Matrix starts from here
+
+
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+void add_self(int&a , int b , int M){
+    a += b;
+    if(a >= M){
+        a -= M;
+    }
+}
+int mul(int a , int b, int M){
+    return (long long) a * b % M;
+}
+int Mod = 1e9 + 7;
+struct Matrix{
+    int r = 0 ;
+    int c = 0;
+    vector<vector<int> >temp;
+    Matrix(int a , int b){
+        temp.resize(a , vector<int>(b));
+        r = a;
+        c = b;
+  }
+  Matrix operator* (const Matrix& b)const{
+      Matrix res = Matrix(r ,b.c);
+      for(int i = 0 ; i < r; ++i){
+          for(int j = 0 ; j < b.c; ++j){
+              for(int k = 0 ; k < c; ++k){
+                  add_self(res.temp[i][k], mul(temp[i][j] , b.temp[j][k] , Mod),  Mod);
+              }
+          }
+      }
+      return res;
+  }
+  void write(){
+      for(int i = 0 ; i < r; ++i){
+          for(int j = 0 ; j < c; ++j){
+              printf("%d ",temp[i][j]);
+          }
+          puts("");
+      }
+  }
+};
+ 
+Matrix mpow(Matrix x , long long n){
+    Matrix ans = Matrix(2 , 2);
+    ans.temp = {{1 , 1},{1 , 1}};
+    for(;n;n >>= 1){
+        if(n&1){
+            ans = ans * x;
+        }
+        x = x * x;
+    }
+    return ans;
+}
