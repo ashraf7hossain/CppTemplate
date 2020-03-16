@@ -33,3 +33,25 @@ void BFS(vector<int>adj[100001] , int start , int target){
     }
     printf("%d\n" , dist[target]);
 }
+
+// detecting cycle in undirected graph
+void dfs(int u , int pr){
+    if(color[u] == 2)return;
+    if(color[u] == 1){ // cycle exists 
+        times++;
+        int cur = pr;
+        mark[cur] = times;
+        while(cur != u){
+            cur = par[cur];
+            mark[cur] = times;
+        }
+        return;
+    }
+    color[u] = 1;
+    par[u] = pr;
+    for(int i : g[u]){
+        if(i == par[u])continue;
+        dfs(i , u);
+    }
+    color[u] = 2;
+}
