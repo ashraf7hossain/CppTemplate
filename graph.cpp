@@ -33,11 +33,9 @@ void BFS(vector<int>adj[100001] , int start , int target){
     }
     printf("%d\n" , dist[target]);
 }
-
-// detecting cycle in undirected graph
 void dfs(int u , int pr){
     if(color[u] == 2)return;
-    if(color[u] == 1){ // cycle exists 
+    if(color[u] == 1){
         times++;
         int cur = pr;
         mark[cur] = times;
@@ -45,6 +43,8 @@ void dfs(int u , int pr){
             cur = par[cur];
             mark[cur] = times;
         }
+        memset(mark , 0 , sizeof(mark));
+        memset(par, 0 , sizeof(par));
         return;
     }
     color[u] = 1;
@@ -54,4 +54,35 @@ void dfs(int u , int pr){
         dfs(i , u);
     }
     color[u] = 2;
+}
+///MAZE GRID MINIMUM OR MAXIMUM PATH BFS ///
+const int deltaX[4] = {-1 , 1, 0 , 0};
+const int deltaY[4] = {0 , 0 , -1 , 1};
+char grid[26][26];
+int h , w;
+bool ok(int x , int y){
+    return x >-1 && x < h && y >-1 && y < w && grid[x][y]=='.';
+}
+int BFS(int x , int y){
+    int dist[26][26];
+    int ans = 0;
+    memset(dist, -1 , sizeof(dist));
+    dist[x][y] = 0;
+    queue<pair<int, int> > q;
+    q.push({x, y});
+    while(!q.empty()){
+        pair<int,int> pos = q.front();
+        q.pop();
+        for(int d = 0 ; d < 4; ++d){
+            pair<int,int> new_pos = {pos.first + deltaX[d]  , pos.second + deltaY[d]};
+            if(ok(new_pos.first , new_pos.second)){
+                if(dist[new_pos.first][new_pos.second] == -1){
+                    dist[new_pos.first][new_pos.second] = dist[pos.first][pos.second] + 1;
+                    ans = max(dist[new_pos.first][new_pos.second] , ans);
+                    q.push(new_pos);
+                }
+            }
+        }
+    }
+    return ans;
 }
