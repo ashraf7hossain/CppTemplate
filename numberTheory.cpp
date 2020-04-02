@@ -1,4 +1,3 @@
-
 long long inverse(int a, int md){
   a %= md;
   if(a<0)a += md;
@@ -47,6 +46,32 @@ void sieve(){
         }
     }
 }
+bool is_composit[N];
+vector<int>primes;
+void LinearSieve(){
+    is_composit[1] = 1;
+    for(int i = 2 ; i < N; ++i){
+        if(!is_composit[i]){
+            primes.push_back(i);
+        }
+        for(int j = 0 ; j < primes.size() && i * primes[j] < N; ++j){
+            is_composit[i * primes[j]] = 1;
+            if(i % primes[j] == 0)break;
+        }
+    }
+}
+vector<int>phi(N + 1);
+void PHI(){
+    iota(phi.begin(), phi.end(), 0);
+    for(int i = 2 ; i <= N; ++i){
+        if(phi[i] == i){
+            for(int j = i ; j <= N; j += i){
+                phi[j] -= phi[j] / i; 
+            }
+        }
+    }
+}
+
 ///Matrix starts from here
 
 
