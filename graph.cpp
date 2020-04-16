@@ -16,6 +16,21 @@ void bipert(int u, int pr){
   }
 }
 
+
+vector<int>g[N];
+int dp[N] , sz[N];
+void dfs(int x , int pr){
+    dp[x] = dp[pr] + 1; // counts depth of the graph
+    sz[x] = 1;          //counts children of a node
+    for(int& u : g[x]){
+        if(u != pr){
+            dfs(u, x);
+            sz[x] += sz[u];
+        }
+    }
+}
+
+
 void BFS(vector<int>adj[100001] , int start , int target){
     vector<int>dist(100001 , INT_MAX);
     dist[start] = 0;
@@ -55,7 +70,7 @@ void dfs(int u , int pr){
     }
     color[u] = 2;
 }
-///MAZE GRID MINIMUM OR MAXIMUM PATH BFS ///
+MAZE GRID MINIMUM OR MAXIMUM PATH BFS
 const int deltaX[4] = {-1 , 1, 0 , 0};
 const int deltaY[4] = {0 , 0 , -1 , 1};
 char grid[26][26];
