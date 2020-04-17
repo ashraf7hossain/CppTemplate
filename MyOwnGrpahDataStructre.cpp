@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+// this graph is one based indexed
 template<typename T>
 class graph{
    public:
