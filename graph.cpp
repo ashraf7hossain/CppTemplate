@@ -4,7 +4,7 @@ vector<int>bg[2];
 int cnt[2];
 bool bip;
 
-void bipert(int u, int pr){
+void bipart(int u, int pr){
   cl[u] = pr;
   ++cnt[pr];
   bg[pr].push_back(u);
