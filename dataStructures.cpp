@@ -87,3 +87,65 @@ int get(int r ){
 	}
 	return res;
 }
+ 
+const int N = 2e5+5;
+struct node{
+  int64_t s,mn,lz;
+} t[4*N];
+ 
+void apply(int v, int64_t new_val, int tl,int tr){
+  t[v].s += new_val*(tr-tl+1);
+  t[v].lz += new_val;
+}
+void push(int v, int tl, int tm, int tr){
+  apply(2*v,t[v].lz,tl,tm);
+  apply(2*v+1,t[v].lz,tm+1,tr);
+  t[v].lz = 0;
+}
+ 
+int n,q;
+ 
+void update(int pos, int new_val,int v=1, int tl=0, int tr=n-1) {
+    if (tl == tr) {
+        t[v].s = new_val;
+    } else {
+        int tm = (tl + tr) >> 1;
+        push(v,tl,tm,tr);
+        if (pos <= tm)
+            update(pos,new_val,v*2,tl,tm);
+        else
+            update(pos,new_val,v*2+1,tm+1,tr);
+        t[v].s = t[v*2].s + t[v*2+1].s;
+    }
+}
+ 
+void update2(int l, int r,int64_t new_val,int v=1, int tl=0,int tr=n-1){ // lazy propagation
+  if(l<=tl&&r>=tr){
+    apply(v,new_val,tl,tr);
+    return;
+  }
+  int tm = (tl+tr)>>1;
+  push(v, tl, tm, tr);
+  if(l<=tm){
+    update2(l,r,new_val,2*v,tl,tm);
+  }
+  if(tm<r){
+    update2(l,r,new_val,2*v+1,tm+1,tr);
+  }
+}
+ 
+int64_t query(int l,int r,int v=1, int tl=0, int tr=n-1) {
+    if (l > r) 
+        return 0;
+    if (l == tl && r == tr) {
+        return t[v].s;
+    }
+    if(l<=tl&&tr<=r){
+      return t[v].s;
+    }
+    int tm = (tl + tr) >> 1;
+    push(v,tl,tm,tr);
+   /* return (l<=tm?query(l,r,2*v,tl,tm):0)+(tm<r?query(l,r,2*v+1,tm+1,tr):0);*/
+    return query(l,min(r,tm),v*2, tl, tm)
+           + query(max(l,tm+1),r,v*2+1, tm+1, tr);
+}
