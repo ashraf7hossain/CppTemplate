@@ -101,3 +101,44 @@ int BFS(int x , int y){
     }
     return ans;
 }
+
+
+//LCA starts
+
+const int N = 2e5 + 5;
+
+vector<int>g[N];
+                         //l=ceil(log2(n))+1
+int tin[N] , tout[N] , n , l , anc[N][20] , tmz;
+
+//dfs(1 , 1) root , root
+void dfs(int u , int pr){
+	tin[u] = ++tmz;
+	anc[u][0] = pr;
+	for(int i = 1 ; i <= l; ++i){
+		anc[u][i] = anc[anc[u][i - 1]][i - 1];
+	}
+	for(int v : g[u]){
+		if(v == pr)continue;
+		dfs(v , u);
+	}
+	tout[u] = ++tmz;
+}
+
+bool is_anc(int u , int v){
+	return tin[u] <= tin[v] && tout[u] >= tout[v];
+}
+
+int find_lca(int u , int v){
+	if(is_anc(u , v)){
+		return u;
+	}
+	if(is_anc(v , u)){
+		return v;
+	}
+	for(int i = l ; i >= 0; --i){
+		if(!is_anc(anc[u][i] , v))u = anc[u][i];
+	}
+	return anc[u][0];
+}
+ // LCA ends
