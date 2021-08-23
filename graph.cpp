@@ -17,6 +17,42 @@ void bipart(int u, int pr){
 }
 
 
+/*****************topological sort *****************************/
+class topSort{
+	private: vector<vector<int> > g;
+	private: int n ;
+	private: vector<int>in_degree;
+	private: queue<int>q;
+	public: topSort(vector<vector<int> > v , int N){
+		g = v;
+		n = N;
+		in_degree.resize(n + 1, 0);
+		for(int i = 0 ; i < n; ++i){
+			for(int j : g[i]){
+				in_degree[j]++;
+			}
+		}
+		for(int i = 0 ; i < n; ++i)if(!in_degree[i])q.push(i);
+
+	}
+	vector<int>top_order(){
+		vector<int>res;
+		while(!q.empty()){
+			int now = q.front();
+			q.pop();
+			res.push_back(now);
+			for(int next : g[now]){
+				if(--in_degree[next] == 0)q.push(next);
+			}
+		}
+		return res;
+	}
+	void write(){
+		for(int i = 0 ; i < n ; ++i)cout << in_degree[i] << ' ' << i << endl;
+		cerr << endl;
+	}
+};
+
 vector<int>g[N];
 int dp[N] , sz[N];
 void dfs(int x , int pr){
