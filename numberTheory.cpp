@@ -86,6 +86,65 @@ void PrimeFactoraizattion(){
     if(n > 1)primeFactors.emplace_back(n , 1);
  }
 
+class Seive{
+  private: int N;
+    vector<bool>is_composit;
+    vector<int>primes;;
+
+    public:
+      Seive(int sz = 1e5 + 10){
+        N = sz;
+        is_composit.resize(N + 1);
+      }
+    void LinearSieve(){
+      // cerr << is_composit.size() << endl;
+        is_composit[1] = 1;
+        for(int i = 2 ; i < N; ++i){
+            if(!is_composit[i]){
+                primes.push_back(i);
+            }
+            for(int j = 0 ; j < primes.size() && i * primes[j] < N; ++j){
+                is_composit[i * primes[j]] = 1;
+                if(i % primes[j] == 0)break;
+            }
+        }
+    }
+    vector<int> SegmentedSeive(int L , int R){
+      bool is_prime[R - L + 1];
+      // LinearSieve();
+      vector<int>seg_primes;
+      memset(is_prime , 1 , sizeof(is_prime));
+      for(int i = 0 ; primes[i] * primes[i] <= R ; ++i){
+        int now = primes[i];
+        int base = (L / now) * now;
+        if(base < L){
+          base += now;
+        }
+        for(int j = base; j <= R; j += now){
+            is_prime[j - L] = false;
+           }
+           if(base == now){
+            is_prime[base-L] = true;
+           }
+      }
+      for(int i = 0 ; i <= R - L; ++i){
+        if(is_prime[i])seg_primes.push_back(i + L);
+      }
+      return seg_primes;
+
+    }
+    void printPrimes(){
+      // cerr << primes.size();
+      for(int i : primes){
+        cout << i <<" ";
+      }
+      cout << endl;
+    }
+};
+
+
+
+
 ///Matrix starts from here
 
 
