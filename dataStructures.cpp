@@ -2,6 +2,71 @@
 
 using namespace std;
 
+
+/*******************************segment tree with struct****************************************************/
+
+const int N = 2e5+1;
+ 
+int arr[N];
+ 
+struct Item{
+  int min , sum;
+}tree[4*N];
+ 
+Item merge(Item a, Item b){
+  return {min(a.min, a.sum + b.min),a.sum+b.sum};
+};
+Item nothing(){
+  return {INT_MAX,0LL};
+};
+Item single(int a){
+  return {a,a};
+}
+ 
+void build(int node, int L, int R){   // build(1 , 0 , n - 1)
+  if(L==R){
+    tree[node]=single(arr[L]);
+    return;
+  }
+  int m=(L+R)>>1;
+  build(2*node,L,m);
+  build(2*node+1,m+1,R);
+  tree[node]=merge(tree[2*node],tree[2*node+1]);
+}
+ 
+void update(int node,int L,int R,int l,int r,int val){ // point update(1 , 0 , n - 1 , index , index , value)
+  if(l<=L&&R<=r){
+    tree[node] = single(val);
+    return;
+  }
+  if(r<L||l>R)return;
+  int m=(L+R)>>1;
+  update(2*node,L,m,l,r,val);
+  update(2*node+1,m+1,R,l,r,val);
+  tree[node]=merge(tree[2*node],tree[2*node+1]);
+}
+ 
+Item reply(int node,int L, int R, int l, int r){
+  if(l<=L&&R<=r){
+    return tree[node];
+  }
+  if(r<L||l>R)return nothing();
+  int m=(L+R)>>1;
+  return merge(reply(2*node,L,m,l,r),reply(2*node+1,m+1,R,l,r));
+}
+
+/****************************************segment tree with struct******************************************/
+
+
+
+
+
+
+
+
+
+
+
 const  int N = 1e6;
 
 int arr[N] , n;
