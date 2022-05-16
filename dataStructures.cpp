@@ -214,3 +214,95 @@ int64_t query(int l,int r,int v=1, int tl=0, int tr=n-1) {
     return query(l,min(r,tm),v*2, tl, tm)
            + query(max(l,tm+1),r,v*2+1, tm+1, tr);
 }
+struct node{
+  int64_t s , lz;
+  bool lz2 = 0;
+};
+ 
+struct segmentTree{
+  int32_t n ;
+  int64_t s , mn , lz;
+  bool lz2 = 0;
+  vector<node>t;
+  segmentTree(int32_t x):n(x),t(4*x + 5){}
+  void apply(int v, int64_t new_val,bool x2, int tl,int tr){
+    if(x2){
+     t[v].s = 0;
+     t[v].lz = 0;
+     t[v].lz2 = 1;
+    }
+    t[v].s += new_val*(tr-tl+1);
+    t[v].lz += new_val;
+  }
+  void push(int v, int tl, int tm, int tr){
+    apply(2*v,t[v].lz,t[v].lz2,tl,tm);
+    apply(2*v+1,t[v].lz,t[v].lz2,tm+1,tr);
+    t[v].lz = 0;
+    t[v].lz2 = 0;
+  }
+   
+ 
+  void update(int pos, int new_val,int v, int tl, int tr) {
+      if (tl == tr) {
+          t[v].s = new_val;
+      } else {
+          int tm = (tl + tr) >> 1;
+          push(v,tl,tm,tr);
+          if (pos <= tm)
+              update(pos,new_val,v*2,tl,tm);
+          else
+              update(pos,new_val,v*2+1,tm+1,tr);
+          t[v].s = t[v*2].s + t[v*2+1].s;
+      }
+  }
+  void update(int pos , int64_t new_val){
+    update(pos , new_val , 1 , 0 , n - 1);
+  }
+   
+  void update2(int l, int r,int64_t new_val,bool x2,int v, int tl,int tr){
+    if(l<=tl&&r>=tr){
+      apply(v,new_val,x2,tl,tr);
+      return;
+    }
+    int tm = (tl+tr)>>1;
+    push(v, tl, tm, tr);
+    if(l<=tm){
+      update2(l,r,new_val,x2,2*v,tl,tm);
+    }
+    if(tm<r){
+      update2(l,r,new_val,x2,2*v+1,tm+1,tr);
+    }
+    t[v].s = t[2*v].s+t[2*v+1].s;
+  }
+  //update range l,r by new_val @if x2=0 it adds new_val @else set to new_val
+  void update2(int l , int r , int64_t new_val , bool x2){ 
+    update2(l , r , new_val , x2 , 1 , 0 , n  - 1);
+  }
+   
+  int64_t query(int l,int r,int v, int tl, int tr) {
+      if (l > r) 
+          return 0;
+      if (l == tl && r == tr) {
+          return t[v].s;
+      }
+      if(l<=tl&&tr<=r){
+        return t[v].s;
+      }
+      int tm = (tl + tr) >> 1;
+      push(v,tl,tm,tr);
+     /* return (l<=tm?query(l,r,2*v,tl,tm):0)+(tm<r?query(l,r,2*v+1,tm+1,tr):0);*/
+      return query(l,min(r,tm),v*2, tl, tm)
+             + query(max(l,tm+1),r,v*2+1, tm+1, tr);
+  }
+  int64_t query(int l , int r){
+    return query(l , r ,  1 , 0 ,  n - 1);
+  }
+  
+  void write(){
+    for(int i = 0 ; i < n ; ++i){
+      cout << query(i , i) <<" ";
+    }
+    cout << "\n";
+  }
+};
+ 
