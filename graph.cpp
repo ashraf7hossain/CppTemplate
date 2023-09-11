@@ -12,10 +12,22 @@ void bipart(int u, int pr){
     if(cl[v] == -1)
      bipert(v,1-pr);
     if(cl[v] == cl[u])
-      bip = true;
+      bip = true; //bipartite not possible 
   }
 }
-
+//checking bipartite 
+bool dfs(int u, int cl){
+  col[u]=cl;
+  vis[u]=1;
+  v[cl].push_back(u);
+  for(int v : g[u]){
+    if(col[v]==-1 && !dfs(v,cl^1)){ // always we have to think negative 
+      return false;
+    }
+    if(col[u]==col[v])return false;
+  }
+  return true;
+}
 
 /*****************topological sort *****************************/
 class topSort{
