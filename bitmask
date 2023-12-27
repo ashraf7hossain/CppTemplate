@@ -1,0 +1,18 @@
+// generates all subsets of length k
+void GospersHack(int k, int n)
+{
+    int set = (1 << k) - 1;
+    int limit = (1 << n);
+    int cnt  = 0;
+    while (set < limit)
+    {
+        
+        
+        cnt++;
+        // Gosper's hack:
+        int c = set & - set;
+        int r = set + c;
+        set = (((r ^ set) >> 2) / c) | r;
+    }
+    cout << cnt << endl;
+}
