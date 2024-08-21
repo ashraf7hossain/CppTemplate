@@ -1,0 +1,58 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+      "key": "ctrl+k",
+      "when": "codeActionMenuVisible",
+      "command": "selectPrevCodeAction"
+    },
+    {
+      "key": "ctrl+j",
+      "when": "codeActionMenuVisible",
+      "command": "selectNextCodeAction"
+    },
+    {
+      "key": "ctrl+j",
+      "command": "selectNextSuggestion",
+      "when": "suggestWidgetVisible"
+    },
+    {
+      "key": "ctrl+k",
+      "command": "selectPrevSuggestion",
+      "when": "suggestWidgetVisible"
+    },
+    {
+      "key": "ctrl+j",
+      "command": "workbench.action.quickOpenSelectNext",
+      "when": "inCodeActionMenu"
+    },
+    {
+      "key": "ctrl+k",
+      "command": "workbench.action.quickOpenSelectPrevious",
+      "when": "inCodeActionMenu"
+    },
+    {
+      "key": "ctrl+p",
+      "command": "workbench.action.quickOpen"
+    },
+    {
+      "key": "ctrl+k",
+      "command": "workbench.action.quickOpenSelectPrevious",
+      "when": "inQuickOpen && !editorFocus"
+    },
+    {
+      "key": "ctrl+j",
+      "command": "workbench.action.quickOpenSelectNext",
+      "when": "inQuickOpen && !editorFocus"
+    },
+    {
+      "key": "ctrl+j",
+      "command": "selectNextSuggestion",
+      "when": "hideSuggestWidgetMultipleSuggestions && suggetsWidgetVisible && textInputFocus"
+    },
+    {
+      "key": "ctrl+k",
+      "command": "selectPrevSuggestion",
+      "when": "hideSuggestWidgetMultipleSuggestions && suggetsWidgetVisible && textInputFocus"
+    }
+  ]
+  

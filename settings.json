@@ -1,0 +1,16 @@
+{
+        // vim settings
+        "vim.leader": "<Space>",
+        "vim.normalModeKeyBindingsNonRecursive": [
+            { "before" : ["leader", "v"] , "commands": [":vsplit"] },
+            { "before" : ["leader", "h"] , "commands": [":split"] },
+            { "before" : ["leader", "q"] , "commands": ["workbench.action.closeActiveEditor"] },
+            // panes 
+            { "before" : ["leader", "h"], "commands": ["workbench.action.focusLeftGroup"] },
+            { "before" : ["leader", "j"], "commands": ["workbench.action.focusBelowGroup"] },
+            { "before" : ["leader", "k"], "commands": ["workbench.action.focusAboveGroup"] },
+            { "before" : ["leader", "l"], "commands": ["workbench.action.focusRightGroup"] },
+            // sidemenu
+            { "before" : ["leader", "e"], "commands": ["workbench.action.focusSideBar"] },
+        ]
+}
